@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 //this is an entity class used to persist data from database
+//Acts as the data blueprint for your app — no business logic here
+//Usually mapped to a database table using annotations like @Entity
 @Entity
 public class Patient {
     //the memebers are public so that can only be accessed through getters and setters
