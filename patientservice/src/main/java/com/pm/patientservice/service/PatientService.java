@@ -14,6 +14,9 @@ import java.util.List;
 
 @Service
 public class PatientService {
+
+//final here ensures that your PatientService always uses the same PatientRepository
+// instance injected at construction and prevents accidental reassignment
 private final PatientRepository patientRepository;
 
 //DInjection through constructor
