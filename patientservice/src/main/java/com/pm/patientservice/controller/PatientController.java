@@ -1,13 +1,28 @@
 package com.pm.patientservice.controller;
 
+import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.service.PatientService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+
+//data flow:Client → sends JSON request
+//
+//Controller → maps request → calls service
+//
+//Service → applies business logic → uses mapper → calls repository
+//
+//Repository → handles persistence → executes SQL
+//
+//Database → stores/retrieves data
+//
+//Service → maps entity → response DTO
+//
+//Controller → returns JSON response
 
 //tell spring that it is a rest controller class
 @RestController
@@ -29,7 +44,7 @@ public class PatientController {
     //-Lets you set HTTP status codes and headers explicitly.
     //-you can control the entire HTTP response.
     @GetMapping
-    public ResponseEntity<List<PatientResponseDTO>> getpatients(){
+    public ResponseEntity<List<PatientResponseDTO>> getpatients() {
         List<PatientResponseDTO> patients = patientService.getpatients();
 
         //ResponseEntity.ok() is a shortcut for creating a ResponseEntity with HTTP 200 OK status
@@ -37,6 +52,18 @@ public class PatientController {
 
     }
 
+    //ctrl +alt+shift+L to format the code
+    //shift *2 to search
+    //postmapping for creating
+    //@Requestbody will convert  json to patientrequestDTO object
+    //@valid will validate with the validation added in patientRequestDTO class
+    @PostMapping
+    public ResponseEntity<PatientResponseDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+        PatientResponseDTO patientResponseDTO = patientService.createPatient(patientRequestDTO);
+
+        return ResponseEntity.ok().body(patientResponseDTO);
+
+    }
 
 
 }

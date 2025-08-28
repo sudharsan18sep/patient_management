@@ -1,5 +1,6 @@
 package com.pm.patientservice.service;
 
+import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
@@ -41,6 +42,14 @@ public PatientService(PatientRepository patientRepository){
     //simpler version
     //return patientRepository.findAll().stream().map(PatientMapper::toDTO).toList();
 
+ }
+
+ //receives DTO from controller and converts it into a domain model
+ public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO){
+    //.save() requires an entity model object
+    Patient newPatient = patientRepository.save(PatientMapper.toModel(patientRequestDTO));
+
+    return PatientMapper.toDTO(newPatient);
  }
 
 }
