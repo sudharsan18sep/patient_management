@@ -1,6 +1,8 @@
 package com.pm.patientservice.exception;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,8 +15,11 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     //This method will run whenever a @Valid annotated request body fails validation in your controller
-    //MethodArgumentNotValidException Thrown automatically by Spring when @Valid detects invalid data
+    //MethodArgumentNotValidException Thrown automatically by Spring when @Valid detects invalid data, An exception thrown when a controller method’s argument is not valid
+    //MAVE - If the method argument is not valid, throw an exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(
             MethodArgumentNotValidException ex){
@@ -32,6 +37,14 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(
                 error -> errors.put(error.getField(), error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleEmailAlreadyExistException( EmailAlreadyExistsException ex){
+       log.warn("Email already Exists {}", ex.getMessage());
+        Map<String, String>  errors = new HashMap<>();
+       errors.put("message", "Email address Already Exists");
+       return ResponseEntity.badRequest().body(errors);
     }
 
 }
