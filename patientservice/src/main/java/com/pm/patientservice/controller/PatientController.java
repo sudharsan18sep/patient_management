@@ -3,6 +3,8 @@ package com.pm.patientservice.controller;
 import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.service.PatientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,7 @@ import java.util.UUID;
 @RestController
 //also tell spring that it will handle all the "/patients" request
 @RequestMapping("/patients")
+@Tag(name ="Patient", description ="API for managing Patients")
 public class PatientController {
 
     //for DI
@@ -45,6 +48,7 @@ public class PatientController {
     //-Lets you set HTTP status codes and headers explicitly.
     //-you can control the entire HTTP response.
     @GetMapping
+    @Operation(summary = "Get all patients")
     public ResponseEntity<List<PatientResponseDTO>> getpatients() {
         List<PatientResponseDTO> patients = patientService.getpatients();
 
@@ -59,6 +63,7 @@ public class PatientController {
     //@Requestbody will convert  json to patientrequestDTO object
     //@valid will validate with the validation added in patientRequestDTO class
     @PostMapping
+    @Operation(summary = " create a new patient")
     public ResponseEntity<PatientResponseDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
         PatientResponseDTO patientResponseDTO = patientService.createPatient(patientRequestDTO);
 
@@ -67,6 +72,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update patient")
     public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id, @RequestBody PatientRequestDTO patientRequestDTO)
     {
         PatientResponseDTO patientResponseDTO = patientService.updatePatient(id, patientRequestDTO);
@@ -75,6 +81,7 @@ public class PatientController {
     }
 
 @DeleteMapping("/{id}")
+@Operation(summary = "delete patient")
     public ResponseEntity<Void> deletePatient(@PathVariable UUID id){
         patientService.deletePatient(id);
 
