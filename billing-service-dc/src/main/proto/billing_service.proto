@@ -1,0 +1,33 @@
+//blueprint for our grpc files
+//protobuf version 3
+syntax = "proto3";
+
+//service request and response file is splitted instead in one file
+option java_multiple_files = true;
+//puts all the generated into billing package
+option java_package = "billing";
+
+//specify name of service and things in return
+
+service BillingService{
+  //billingrequest is the input from client and billing response is the output sent
+  rpc CreateBillingAccount(BillingRequest) returns(BillingResponse);
+}
+//how billingrequest looks like its a kind of DTO
+
+message BillingRequest{
+  //the number has to unique
+  string patientID = 1;
+  string name = 2;
+  string email = 3;
+
+
+}
+
+message BillingResponse{
+  string accountId = 1;
+  string status = 2;
+
+}
+
+//use the pom.xml file to generate the grpc code
