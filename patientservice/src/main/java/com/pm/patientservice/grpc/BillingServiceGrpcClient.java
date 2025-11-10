@@ -32,6 +32,7 @@ public class BillingServiceGrpcClient {
     }
 
     //different methods that uses this connection to interact with the server
+    //whenever a patient is created this method createBillingAccount is called
     public BillingResponse createBillingAccount(String patientId, String name, String email){
         BillingRequest request = BillingRequest.newBuilder().setPatientId(patientId).setName(name)
                 .setEmail(email).build();

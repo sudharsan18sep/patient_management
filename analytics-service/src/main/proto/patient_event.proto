@@ -1,0 +1,16 @@
+//describe the protoperties that are sent to kafka topic
+//proto file for the patient event
+//proto file that used to determine the format of the patient event
+// that gets sent from kafka producer to kafka topic 
+syntax = "proto3";
+
+
+package patient.events;
+option java_multiple_files = true;
+
+message PatientEvent{
+  string patientId =1;
+  string name =2;
+      string email =3;
+      string event_type =4;
+}
